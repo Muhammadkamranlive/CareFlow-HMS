@@ -1,0 +1,42 @@
+---
+description: Breadcrumbs, menu search, and traditional accordion sidebar
+alwaysApply: true
+---
+
+# BusinessSuite ERP — Navigation UX (Breadcrumbs & Menu Search)
+
+## Breadcrumbs (mandatory)
+
+Every authenticated module page must show breadcrumbs so users know where they are.
+
+- Place crumbs **above** the page title / module subnav (or as the first row of the module chrome).
+- Pattern: `Home / Product / Page` (e.g. `Home / HRM / Employees`). Optional section crumb when useful.
+- Current page is plain text (not a link). Parents are links.
+- Nested routes (e.g. `/hrm/employees/[id]`) must extend the trail (… / Employees / Profile).
+- Use the shared `Breadcrumbs` component (`components/common/breadcrumbs.tsx`) — do not invent ad-hoc crumb markup.
+- When adding a new module page, wire crumbs via the module subnav or pass an explicit `trail`.
+
+## Global menu search autocomplete (mandatory)
+
+Every dashboard shell must keep the top-center **menu search** with autocomplete:
+
+- Component: `GlobalMenuSearch` in the app shell header (already on ERP pages).
+- Results come from `lib/menu-registry.ts` filtered by `canMenu(..., "view")`.
+- Keyboard: ArrowUp/ArrowDown, Enter to open, Escape to close; ⌘K / Ctrl+K focus when available.
+- New menus **must** be registry-driven so search stays complete.
+- Do not remove or hide menu search from module layouts.
+
+## Apps portal + decoupled modules (mandatory)
+
+1. After login, users land on **`/apps`** — a card grid of licensed products (HRM, CRM, Healthcare, …).
+2. Opening a card enters **one app only**. The sidebar shows **only that module’s menus**, flat (no multi-module accordion, no nested Core/Employment dropdowns).
+3. **All apps** (sidebar + header) returns to `/apps`. Search inside an app is scoped to that module’s menus.
+4. Do not reintroduce a global multi-module sidebar as the primary navigation.
+
+## Sidebar accordion (within one app)
+
+Inside an open app, menus are a **flat list** ordered by process stage where applicable (Guide → numbered stages → other menus → Email / Rule tools). Do not nest further dropdown sections that hide menus.
+
+## Routes
+
+Every sidebar `href` must resolve to a real `app/.../page.tsx` (or an in-page hash on an existing page such as `/reports#kpis`). Prefer dedicated routes over `#` stubs for distinct menus (e.g. `/crm/contacts`, not `/crm/customers#contacts`). Module analytics use `/crm/reports`, `/sales/reports`, etc. — not `/reports#sales`.

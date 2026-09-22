@@ -1,0 +1,5 @@
+# Email API no longer deploys from this monorepo.
+# Use the standalone repository instead:
+#   https://github.com/Muhammadkamranlive/BusinessSuite-Email-API
+#
+# Next.js ERP deploys on Vercel — see docs/DEPLOY-ONLINE.md

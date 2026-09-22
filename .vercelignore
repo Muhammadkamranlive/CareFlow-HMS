@@ -1,0 +1,5 @@
+_reference/
+*.pdf
+.cursor/
+PelicanHRM.pdf
+DEMO_CREDENTIALS.txt
