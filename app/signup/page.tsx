@@ -10,12 +10,11 @@ import { MktButton } from "@/components/marketing/mkt-button";
 import { Field, SelectInput, TextInput } from "@/components/ui";
 import { findAccountByEmail, loginAccount, signupAccount } from "@/lib/auth/public-auth";
 import { setDemoSession } from "@/lib/auth/session";
+import { isCareFlowProductModule } from "@/lib/careflow-product";
 import { moduleLabels, type ModuleKey } from "@/lib/permissions";
-import { moduleLabel, platformAppLabel } from "@/lib/billing/module-catalog";
 import {
   buildSignupSelectionFromSearchParams,
-  persistSignupAppSelection,
-  readSignupAppSelection
+  persistSignupAppSelection
 } from "@/lib/billing/signup-apps";
 import { ensureAdminDirectoryUser, upsertTenant } from "@/modules/admin/services/admin.store";
 import {
@@ -98,7 +97,6 @@ function SignupPackagePanel({
   interval: BillingInterval;
   onIntervalChange: (interval: BillingInterval) => void;
 }) {
-  const appSelection = readSignupAppSelection();
   if (!pkg) {
     return (
       <aside className="rounded-[1.35rem] border border-[#e6ebf1] bg-[#f8fafc] p-5 text-sm text-slate-500">
@@ -112,9 +110,9 @@ function SignupPackagePanel({
     interval === "year"
       ? `${formatMoney(pkg.monthly_price_cents, pkg.currency)}/mo billed yearly`
       : `or ${formatMoney(pkg.yearly_price_cents, pkg.currency)}/year`;
-  const modules = pkg.modules as ModuleKey[];
-  const extraModules = appSelection?.modules.filter((m) => !modules.includes(m)) ?? [];
-  const platformApps = appSelection?.platform_apps ?? [];
+  const modules = (pkg.modules as ModuleKey[]).filter((key) => isCareFlowProductModule(key));
+  if (!modules.includes("healthcare")) modules.unshift("healthcare");
+  if (!modules.includes("settings")) modules.push("settings");
 
   return (
     <aside className="sticky top-24 rounded-[1.35rem] border border-[#e6ebf1] bg-white p-5 shadow-[0_18px_40px_rgba(10,37,64,0.08)] sm:p-6">
@@ -170,35 +168,6 @@ function SignupPackagePanel({
           ))}
         </div>
       </div>
-
-      {extraModules.length || platformApps.length ? (
-        <div className="mt-5">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Extra apps (pay per app)</p>
-          <div className="mt-2.5 flex flex-wrap gap-1.5">
-            {extraModules.map((key) => (
-              <span
-                key={key}
-                className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-900"
-              >
-                + {moduleLabel(key)}
-              </span>
-            ))}
-            {platformApps.map((id) => (
-              <span
-                key={id}
-                className="rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-900"
-              >
-                + {platformAppLabel(id)}
-              </span>
-            ))}
-          </div>
-          {appSelection?.addon_monthly_cents ? (
-            <p className="mt-2 text-xs text-slate-500">
-              Estimated add-ons: {formatMoney(appSelection.addon_monthly_cents, pkg.currency)}/mo on top of base
-            </p>
-          ) : null}
-        </div>
-      ) : null}
 
       <ul className="mt-5 space-y-2.5 border-t border-[#eef2f6] pt-5">
         {pkg.features.map((feature) => (
@@ -299,7 +268,7 @@ function SignupInner() {
       return;
     }
     if (!form.companyName.trim()) {
-      setError("Company name is required.");
+      setError("Hospital name is required.");
       return;
     }
     setLoading(true);
@@ -347,12 +316,12 @@ function SignupInner() {
           <div className="mb-8 max-w-2xl">
             <p className="mkt-eyebrow">Step {step} of 2</p>
             <h1 className="mkt-display mt-3 text-3xl sm:text-4xl">
-              {step === 1 ? "Create your company account" : "Activate with subscription"}
+              {step === 1 ? "Create your hospital account" : "Activate the hospital plan"}
             </h1>
             <p className="mkt-muted mt-3 text-sm leading-6">
               {step === 1
-                ? "Register your company admin and pick a package. Module coverage and pricing update on the right."
-                : "Confirm package and pay securely to open your company workspace."}
+                ? "Register the hospital admin and pick a CareFlow plan. Coverage and pricing update on the right."
+                : "Confirm the plan and pay securely to open the hospital workspace."}
             </p>
           </div>
 
@@ -369,7 +338,7 @@ function SignupInner() {
                 ) : null}
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <Field label="Company name" className="md:col-span-2">
+                  <Field label="Hospital name" className="md:col-span-2">
                     <TextInput
                       required
                       value={form.companyName}

@@ -8,33 +8,33 @@ import { useLandingMedia } from "@/components/marketing/use-landing-media";
 const quotes = [
   {
     quote:
-      "We replaced five disconnected tools with one login. The three-way match alone caught vendor billing errors we'd been eating for years.",
-    name: "Operations Director",
-    company: "Wholesale distribution, UAE"
+      "Front desk, ward, and pharmacy finally share one chart. We stopped retyping the MRN between three systems.",
+    name: "Medical Director",
+    company: "General hospital"
   },
   {
     quote:
-      "Pharmacy batches, expiries, and the OPD desk in the same system as our accounts. Our auditors finally stopped asking for spreadsheets.",
-    name: "Managing Partner",
-    company: "Pharmacy supply, Pakistan"
+      "OPD tokens and the pharmacy queue are on the same patient. Auditors stopped asking for the spreadsheet export.",
+    name: "Chief Pharmacist",
+    company: "Clinic network"
   },
   {
     quote:
-      "Credit hold stopped a six-figure exposure the first month. Sales didn't love it — finance did.",
-    name: "CFO",
-    company: "Auto parts trading, KSA"
+      "Bed status is visible before we admit. Housekeeping and nursing are no longer calling each other for a free bed.",
+    name: "Nursing Lead",
+    company: "Inpatient ward"
   },
   {
     quote:
-      "We run it on our own intranet at the mill. No internet on the floor, and payroll still posts to GL on time.",
-    name: "Plant Manager",
-    company: "Textile manufacturing, Pakistan"
+      "We run CareFlow on the hospital intranet. Theatres stay offline, and the chart is still there.",
+    name: "IT Lead",
+    company: "Private hospital"
   },
   {
     quote:
-      "Role-based menus mean my storekeeper sees stock and nothing else. Setup took an afternoon, not a consulting engagement.",
-    name: "General Manager",
-    company: "Multi-warehouse retail"
+      "Billing sees the encounter lines. A payment cannot post above the open balance, which closed a month of disputes.",
+    name: "Billing Supervisor",
+    company: "Outpatient clinic"
   },
   {
     quote:
@@ -53,17 +53,17 @@ export function Testimonials() {
         <div>
           <p className="mkt-eyebrow">What operators say</p>
           <h2 className="mkt-display mt-3 text-3xl text-[color:var(--bs-ink)] sm:text-4xl">
-            Run by people who run companies
+            Used on the ward, not only at the front desk
           </h2>
           <p className="mkt-muted mt-4 max-w-lg text-base leading-7">
-            Distributors, manufacturers, clinics, and trading houses run their day on BusinessSuite —
-            from the warehouse floor to the boardroom. Here is what their operators tell us.
+            Hospitals and clinics run the day on CareFlow —
+            from the front desk to the ward. Here is what their teams tell us.
           </p>
         </div>
         <div className="mkt-testimonial-photo">
           <img
             src={mediaUrl("testimonials.photo", media)}
-            alt="BusinessSuite administration — company dashboard, users, and access control"
+            alt="CareFlow hospital workspace — clinicians reviewing the patient chart"
             width={1200}
             height={900}
           />

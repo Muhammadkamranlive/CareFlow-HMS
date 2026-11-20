@@ -41,7 +41,7 @@ export function ProductModulePage({ module }: { module: ProductModule }) {
             <p className="mkt-muted mt-5 text-lg leading-8">{module.summary}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <MktCta href="/signup">
-                Start your company <ArrowRight className="size-4" />
+                Start your hospital <ArrowRight className="size-4" />
               </MktCta>
               <MktCta href="/pricing" variant="secondary">
                 Compare packages

@@ -5,24 +5,24 @@ import { Reveal } from "@/components/marketing/reveal";
 
 const faqs = [
   {
-    q: "Can we host BusinessSuite ourselves?",
-    a: "Yes. Beyond our shared cloud, we offer dedicated cloud/VPS deployments, licensed self-hosting with your own hosting company, and fully offline intranet installations. Self-hosted and intranet deployments include a commercial license, guided installation, and upgrade support — talk to sales to scope yours."
+    q: "Can we host CareFlow ourselves?",
+    a: "Yes. Beyond shared cloud, we offer dedicated cloud or VPS, licensed self-hosting, and fully offline intranet installs for hospitals that cannot depend on the public internet. Talk to sales to scope installation and upgrades."
   },
   {
-    q: "What does the intranet deployment mean exactly?",
-    a: "The full ERP runs inside your building or private network with no internet dependency — common for factories, hospitals, and secure facilities. It's available alongside any package tier."
+    q: "What does an intranet deployment mean?",
+    a: "CareFlow runs inside the hospital network with no internet dependency — typical for wards and theatres that stay offline. It is available with any package tier."
   },
   {
-    q: "Which apps are included?",
-    a: "Fifteen pay-per apps: Dashboard, CRM, Sales, Procurement, Inventory, Operations (BOM, work orders, maintenance), HRM & payroll, Hospital HMS (OPD, pharmacy, lab, wards), Projects, Documents, Finance, Reports/BI, Administration, plus platform apps Email Engine (compose, HTML templates) and Rule Engine (automations). Package tiers set your base bundle; add extra apps à la carte. Rule Engine requires Email Engine."
+    q: "What is included?",
+    a: "CareFlow is the hospital workspace: patients and MRN, appointments and OPD, emergency, wards and beds, admissions, nursing and vitals, EMR, prescriptions, pharmacy, lab, radiology, claims, and clinical billing. Administration covers users and access."
   },
   {
-    q: "How does pay per app work?",
-    a: "Pick a base package (Silver, Gold, Platinum, or Professional), then add only the business modules and platform engines you need. Licensed apps appear in the sidebar and mega menu; role rights control what each user can do inside those apps."
+    q: "Who uses which screens?",
+    a: "Front desk, clinicians, pharmacy, lab, and billing each open only the menus their role allows. Company administrators manage users, roles, and the subscription."
   },
   {
     q: "How does access control work?",
-    a: "Every menu registers view / create / update / delete rights. You assign role-level defaults (e.g. accountant, HR manager) and can override per user. Effective rights are the merge of both — the user override wins."
+    a: "Every menu registers view / create / update / delete rights. You assign role-level defaults (for example doctor, nurse, pharmacist, or billing) and can override per user. Effective rights are the merge of both — the user override wins."
   },
   {
     q: "Can each company customize forms?",

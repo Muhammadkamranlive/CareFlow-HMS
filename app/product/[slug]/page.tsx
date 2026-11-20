@@ -9,7 +9,7 @@ import { getProductModule } from "@/lib/product-modules";
 export default function ProductSlugPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const module = getProductModule(slug);
+  const module = slug === "healthcare" ? getProductModule(slug) : getProductModule("healthcare");
 
   if (!module) {
     return (

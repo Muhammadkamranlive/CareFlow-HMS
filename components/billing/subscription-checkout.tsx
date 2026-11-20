@@ -490,28 +490,15 @@ export function PricingCards({
               : `or ${formatMoney(pkg.yearly_price_cents, pkg.currency)}/year`}
           </p>
           <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-            {pkg.modules.length} apps in base · add more with pay per app
+            CareFlow hospital workspace included
           </p>
           <div className="mt-2 flex flex-wrap gap-1">
-            {pkg.modules.slice(0, 6).map((m) => (
-              <span key={m} className="rounded-full bg-[color:var(--bs-cloud)] px-2 py-0.5 text-[10px] font-semibold text-slate-600">
-                {moduleLabel(m)}
+            {["CareFlow", "Administration"].map((label) => (
+              <span key={label} className="rounded-full bg-[color:var(--bs-cloud)] px-2 py-0.5 text-[10px] font-semibold text-slate-600">
+                {label}
               </span>
             ))}
-            {pkg.modules.length > 6 ? (
-              <span className="rounded-full bg-[color:var(--bs-cloud)] px-2 py-0.5 text-[10px] font-semibold text-slate-600">
-                +{pkg.modules.length - 6} more
-              </span>
-            ) : null}
           </div>
-          {marketing ? (
-            <Link
-              href="#build-your-plan"
-              className="mt-3 block text-center text-xs font-semibold text-[color:var(--bs-teal)] hover:underline"
-            >
-              + Add Email Engine, Rule Engine, or extra modules
-            </Link>
-          ) : null}
           <ul className="mt-4 flex-1 space-y-2">
             {pkg.features.map((f) => (
               <li key={f} className="text-sm text-slate-600">

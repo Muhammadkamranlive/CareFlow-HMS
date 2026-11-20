@@ -10,7 +10,7 @@ const options = [
     name: "Shared cloud (SaaS)",
     tag: "Included with every package",
     blurb:
-      "Your company runs as an isolated tenant on our managed cloud. Sign up, pick a package, invite the team — live in minutes.",
+      "Your hospital runs as an isolated tenant on our managed cloud. Sign up, pick a plan, invite the team — live in minutes.",
     points: [
       "Tenant-isolated Postgres — your data never mixes",
       "Automatic updates, backups, and monitoring",
@@ -40,7 +40,7 @@ const options = [
     name: "Self-hosted, licensed",
     tag: "Runs with your hosting company",
     blurb:
-      "We deploy BusinessSuite with your own hosting provider under a proper commercial license. Your infrastructure, our software and support.",
+      "We deploy CareFlow with your own hosting provider under a proper commercial license. Your infrastructure, our software and support.",
     points: [
       "Deployed on the hosting company you already trust",
       "Commercial license with defined terms and renewals",
@@ -55,11 +55,11 @@ const options = [
     name: "Intranet / on-premise",
     tag: "Available for any package",
     blurb:
-      "Fully offline deployment inside your building or private network — for plants, hospitals, and organizations that cannot depend on the internet.",
+      "Fully offline deployment inside the hospital building or private network — for sites that cannot depend on the internet.",
     points: [
       "Runs on your LAN with no outside connectivity required",
-      "Same 15 apps — pay per app with role-based access inside each licensed app",
-      "Ideal for factories, hospitals, and secure sites",
+      "The same CareFlow hospital workspace, with role-based access for clinical staff",
+      "Ideal for hospitals and clinics that must stay on a private network",
       "Offered alongside every package tier"
     ],
     cta: { href: "/contact?topic=intranet", label: "Talk to sales" },
@@ -77,8 +77,8 @@ export function DeploymentOptions() {
             Our cloud, your VPS, your hosting company, or no internet at all
           </h2>
           <p className="mkt-muted mt-4 text-[15px] leading-7">
-            The same ERP ships four ways. Start on shared SaaS today and move to dedicated, self-hosted, or
-            intranet later — your data and configuration move with you.
+            The same hospital system ships four ways. Start on shared cloud and move to a dedicated, self-hosted, or
+            intranet deployment later — patient data and configuration move with you.
           </p>
         </Reveal>
 

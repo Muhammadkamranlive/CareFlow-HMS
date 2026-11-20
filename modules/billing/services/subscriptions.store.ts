@@ -4,7 +4,7 @@ import { loadPersisted, savePersisted } from "@/modules/core/services/local-pers
 import type { UUID } from "@/modules/core/types";
 
 const PACKAGES_KEY = "businesssuite:subscription-packages:v2";
-const PACKAGES_CATALOG_PATCH = "businesssuite:packages:deployment-copy:v3";
+const PACKAGES_CATALOG_PATCH = "businesssuite:packages:careflow-hospital:v1";
 const SUBS_KEY = "businesssuite:tenant-subscriptions:v1";
 const DEMO_TENANT_IDS = new Set(seedTenants.map((t) => t.id));
 
@@ -67,20 +67,20 @@ function defaultPackages(): SubscriptionPackage[] {
       code: "silver",
       name: "Silver",
       badge: "Starter",
-      tagline: "Essentials for growing teams",
-      description: "Core CRM, Sales, and Inventory to run day-to-day operations.",
+      tagline: "Clinic and outpatient essentials",
+      description: "Registration, appointments, and the outpatient queue for a small clinic.",
       features: [
         "Up to 10 users",
-        "Modules: Dashboard, CRM, Sales, Inventory, Documents, Reports",
-        "Lead & customer pipeline",
-        "Stock & warehouse registers",
-        "Documents library",
+        "CareFlow hospital workspace",
+        "Patients, MRN, and appointments",
+        "OPD queue and tokens",
+        "Clinical documents",
         "Email support",
-        "Standard reports",
-        "Rule Engine — when→then email & alerts",
+        "Standard clinical reports",
+        "Administration for users and access",
         "Intranet deployment available — talk to sales"
       ],
-      modules: ["dashboard", "crm", "sales", "inventory", "documents", "reports"],
+      modules: ["healthcare", "settings"],
       max_users: 10,
       monthly_price_cents: 4900,
       yearly_price_cents: 49000,
@@ -95,32 +95,21 @@ function defaultPackages(): SubscriptionPackage[] {
       code: "gold",
       name: "Gold",
       badge: "Popular",
-      tagline: "Procurement, HR, and finance",
-      description: "Add Purchases, HRM, and Finance for full mid-market control. Banks, lots, debit notes, and payroll-to-GL live inside those modules.",
+      tagline: "Wards, pharmacy, and the chart",
+      description: "Add inpatient beds, nursing, EMR, pharmacy, and lab for a working hospital floor.",
       features: [
         "Up to 50 users",
         "Everything in Silver",
-        "Modules: Purchases, HRM, Finance, Administration",
-        "Purchase orders & three-way match",
-        "Payroll-to-GL, leaves & attendance",
-        "Extra form fields",
+        "Wards, beds, and admissions",
+        "EMR, orders, and prescriptions",
+        "Pharmacy and laboratory",
+        "Extra clinical form fields",
         "Priority support",
-        "Audit logs",
-        "Rule Engine + compose email",
+        "Clinical audit logs",
+        "Administration for users and access",
         "Intranet deployment available — talk to sales"
       ],
-      modules: [
-        "dashboard",
-        "crm",
-        "sales",
-        "purchases",
-        "inventory",
-        "hrm",
-        "documents",
-        "finance",
-        "reports",
-        "settings"
-      ],
+      modules: ["healthcare", "settings"],
       max_users: 50,
       monthly_price_cents: 9900,
       yearly_price_cents: 99000,
@@ -135,36 +124,21 @@ function defaultPackages(): SubscriptionPackage[] {
       code: "platinum",
       name: "Platinum",
       badge: "Scale",
-      tagline: "Projects, operations, healthcare, and BI",
-      description: "Full module suite with projects, plant operations, hospital HMS, and advanced reporting for multi-team companies.",
+      tagline: "Full hospital, claims, and billing",
+      description: "The complete CareFlow chart: emergency, radiology, claims, and clinical billing with open balances.",
       features: [
         "Up to 200 users",
         "Everything in Gold",
-        "Modules: Projects, Operations, Healthcare HMS",
-        "Projects: tasks, milestones, budgets",
-        "Operations: BOM, work orders, maintenance",
-        "Healthcare: patients, OPD, pharmacy, lab",
-        "Custom reports & BI snapshots",
+        "Emergency and radiology",
+        "Claims and clinical billing",
+        "Invoice checks — charges, payments, and open balance",
+        "Occupancy and ward reports",
         "SSO-ready architecture",
         "Dedicated onboarding",
-        "Rule Engine on every module",
+        "Administration for users and access",
         "Intranet deployment available — talk to sales"
       ],
-      modules: [
-        "dashboard",
-        "crm",
-        "sales",
-        "purchases",
-        "inventory",
-        "hrm",
-        "documents",
-        "finance",
-        "projects",
-        "operations",
-        "healthcare",
-        "reports",
-        "settings"
-      ],
+      modules: ["healthcare", "settings"],
       max_users: 200,
       monthly_price_cents: 19900,
       yearly_price_cents: 199000,
@@ -184,30 +158,16 @@ function defaultPackages(): SubscriptionPackage[] {
         "Isolated infrastructure deployed where you want it: our dedicated cloud, a VPS of your choice, your own hosting company under a commercial license, or a fully offline intranet. Separate database, your domain and white-label name, and instance Super Admin on that stack.",
       features: [
         "Unlimited users",
-        "All modules: Dashboard, CRM, Sales, Purchases, Inventory, Operations, HRM, Healthcare, Documents, Finance, Projects, Reports, Administration",
+        "Full CareFlow hospital workspace plus Administration",
         "Separate database (not shared multi-tenant)",
         "Deploy on dedicated cloud, your VPS, or your hosting company",
         "Licensed self-hosting with guided install & upgrades",
         "Fully offline intranet / on-premise option",
         "Your domain + white-label product name",
         "Custom SLA and success manager — talk to sales",
-        "Rule Engine + full event catalog on your stack"
+        "Clinical audit on your own stack"
       ],
-      modules: [
-        "dashboard",
-        "crm",
-        "sales",
-        "purchases",
-        "inventory",
-        "hrm",
-        "documents",
-        "finance",
-        "projects",
-        "operations",
-        "healthcare",
-        "reports",
-        "settings"
-      ],
+      modules: ["healthcare", "settings"],
       max_users: 0,
       monthly_price_cents: 39900,
       yearly_price_cents: 399000,
@@ -232,8 +192,13 @@ function loadPackages(): SubscriptionPackage[] {
     const next = stored.map((row) => {
       const seed = seeded.find((s) => s.code === row.code);
       if (!seed) return row;
-      const modules = [...new Set([...row.modules, ...seed.modules])];
-      return { ...row, modules, tagline: seed.tagline, description: seed.description, features: seed.features };
+      return {
+        ...row,
+        modules: seed.modules,
+        tagline: seed.tagline,
+        description: seed.description,
+        features: seed.features
+      };
     });
     savePersisted(PACKAGES_KEY, next);
     savePersisted(PACKAGES_CATALOG_PATCH, "1");

@@ -9,21 +9,56 @@ import { PricingCards } from "@/components/billing/subscription-checkout";
 import { Reveal } from "@/components/marketing/reveal";
 import { MktCta } from "@/components/marketing/mkt-button";
 import { LaptopFrame } from "@/components/marketing/screenshot-frame";
-import { ModuleLaptopStage } from "@/components/marketing/module-laptop-stage";
 import { LandingHero } from "@/components/marketing/landing-hero";
 import { TrustStrip } from "@/components/marketing/trust-strip";
 import { FeatureBento } from "@/components/marketing/feature-bento";
 import { DeploymentOptions } from "@/components/marketing/deployment-options";
-import { RuleEngineShowcase } from "@/components/marketing/rule-engine-showcase";
-import { ModulePricingPicker } from "@/components/marketing/module-pricing-picker";
 import { InfraCompare } from "@/components/marketing/infra-compare";
 import { StatsBand } from "@/components/marketing/stats-band";
 import { Testimonials } from "@/components/marketing/testimonials";
 import { LandingFaq } from "@/components/marketing/landing-faq";
 import { ensureProductionSiteContent, listBlogs, type BlogPost } from "@/modules/cms/services/cms.store";
 import type { BillingInterval } from "@/modules/billing/services/subscriptions.store";
-import { productModules } from "@/lib/product-modules";
 import { screenshotForModule } from "@/lib/marketing-media";
+
+const careAreas = [
+  {
+    slug: "patients",
+    eyebrow: "Front desk",
+    title: "Patients & OPD",
+    summary: "MRN registration, appointments, tokens, and the live outpatient queue."
+  },
+  {
+    slug: "wards",
+    eyebrow: "Inpatient",
+    title: "Wards, beds & admissions",
+    summary: "Admit, transfer, and discharge. Bed status and housekeeping stay with the stay."
+  },
+  {
+    slug: "emr",
+    eyebrow: "Clinical",
+    title: "EMR & orders",
+    summary: "SOAP notes, problems, allergies, prescriptions, and allergy checks before a drug is issued."
+  },
+  {
+    slug: "diagnostics",
+    eyebrow: "Diagnostics",
+    title: "Lab & radiology",
+    summary: "Lab orders, results, and imaging requests on the same encounter."
+  },
+  {
+    slug: "pharmacy",
+    eyebrow: "Pharmacy",
+    title: "Pharmacy & dispensing",
+    summary: "Stock, expiry, and dispense from an issued prescription."
+  },
+  {
+    slug: "billing",
+    eyebrow: "Revenue",
+    title: "Clinical billing",
+    summary: "Encounter invoices stay in balance: charges, payments, and the open balance."
+  }
+];
 import { useLandingMedia } from "@/components/marketing/use-landing-media";
 
 export function LandingHome() {
@@ -31,12 +66,6 @@ export function LandingHome() {
   const media = useLandingMedia();
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [interval, setInterval] = useState<BillingInterval>("year");
-  const shelf = [
-    productModules.find((m) => m.slug === "crm"),
-    productModules.find((m) => m.slug === "sales"),
-    productModules.find((m) => m.slug === "finance")
-  ].filter((m): m is NonNullable<typeof m> => Boolean(m));
-
   useEffect(() => {
     ensureProductionSiteContent();
     setBlogs(listBlogs().slice(0, 3));
@@ -50,44 +79,36 @@ export function LandingHome() {
 
       <section id="product" className="relative px-4 pb-4 pt-10 md:px-6">
         <Reveal className="mx-auto max-w-5xl">
-          <div className="mkt-device-shelf">
-            {shelf.map((item) => (
-              <LaptopFrame
-                key={item.slug}
-                src={screenshotForModule(item.slug, media)}
-                alt={item.heroCaption}
-                href={`/product/${item.slug}`}
-                label={item.title}
-              />
-            ))}
-          </div>
+          <LaptopFrame
+            src={screenshotForModule("healthcare", media)}
+            alt="CareFlow hospital workspace — patients, wards, pharmacy, and billing"
+            href="/healthcare"
+            label="CareFlow"
+            hero
+          />
         </Reveal>
       </section>
 
       <section id="modules" className="bg-white">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
           <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="mkt-eyebrow">Inside the product</p>
+            <p className="mkt-eyebrow">Inside the hospital</p>
             <h2 className="mkt-display mt-3 text-3xl text-[color:var(--bs-ink)] sm:text-4xl">
-              15 apps. Click one — the laptop shows that screen.
+              One clinical workspace, from registration to billing.
             </h2>
             <p className="mkt-muted mt-4 text-[15px] leading-7">
-              13 business modules plus Email Engine and Rule Engine, one login. Screenshots are from the live product —
-              click a module and the laptop updates to that app.
+              CareFlow covers the hospital day: front desk, wards, the chart, diagnostics, pharmacy, and the invoice.
             </p>
           </Reveal>
-          <div className="mt-10">
-            <ModuleLaptopStage />
-          </div>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {productModules.map((item, i) => (
+            {careAreas.map((item, i) => (
               <Reveal key={item.slug} delay={(i % 3) * 60}>
-                <Link href={`/product/${item.slug}`} className="mkt-card block h-full p-5">
+                <Link href="/healthcare" className="mkt-card block h-full p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--bs-teal)]">{item.eyebrow}</p>
                   <h3 className="mt-2 text-lg font-semibold text-[color:var(--bs-ink)]">{item.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{item.summary}</p>
                   <p className="mt-3 text-sm font-semibold text-[color:var(--bs-teal)]">
-                    Open {item.title} <ArrowRight className="ml-1 inline size-3.5" />
+                    Open CareFlow <ArrowRight className="ml-1 inline size-3.5" />
                   </p>
                 </Link>
               </Reveal>
@@ -97,8 +118,6 @@ export function LandingHome() {
       </section>
 
       <FeatureBento />
-
-      <RuleEngineShowcase />
 
       <StatsBand />
 
@@ -112,15 +131,11 @@ export function LandingHome() {
             <div className="max-w-xl">
               <p className="mkt-eyebrow">Pricing</p>
               <h2 className="mkt-display mt-4 text-3xl text-[color:var(--bs-ink)] sm:text-4xl">
-                Base packages — pay per app for the rest
+                Hospital plans for the clinical workspace
               </h2>
               <p className="mkt-muted mt-4 text-sm leading-6">
-                Silver through Platinum run on shared SaaS. Professional is dedicated — cloud, VPS, self-hosted, or
-                intranet. Every tier supports{" "}
-                <Link href="#build-your-plan" className="font-semibold text-[color:var(--bs-teal)] hover:underline">
-                  pay per app
-                </Link>
-                : pick your bundle, then add only the modules and platform engines you need.
+                Silver through Platinum run CareFlow on shared cloud. Professional is a dedicated hospital deployment —
+                cloud, VPS, self-hosted, or intranet. Every plan is the hospital product plus administration.
               </p>
             </div>
             <div className="inline-flex self-start rounded-full border border-[color:var(--bs-line)] bg-white p-1">
@@ -148,20 +163,13 @@ export function LandingHome() {
             />
           </div>
           <p className="mt-8 text-center text-sm text-slate-500">
-            Need extra apps only?{" "}
-            <Link href="#build-your-plan" className="font-semibold text-[color:var(--bs-teal)] hover:underline">
-              Build your pay-per-app plan
-            </Link>
-            {" · "}
-            Need self-hosted or intranet?{" "}
+            Need the hospital on your own network?{" "}
             <Link href="/contact" className="font-semibold text-[color:var(--bs-teal)] hover:underline">
               Talk to sales
             </Link>
           </p>
         </div>
       </section>
-
-      <ModulePricingPicker />
 
       <Testimonials />
 
@@ -172,7 +180,7 @@ export function LandingHome() {
           <div className="mb-8 flex items-end justify-between gap-3">
             <div>
               <p className="mkt-eyebrow">Insights</p>
-              <h2 className="mkt-display mt-3 text-3xl text-[color:var(--bs-ink)]">From the BusinessSuite desk</h2>
+              <h2 className="mkt-display mt-3 text-3xl text-[color:var(--bs-ink)]">From the CareFlow desk</h2>
             </div>
             <Link href="/blog" className="text-sm font-semibold text-[color:var(--bs-teal)] hover:underline">
               All articles
@@ -195,11 +203,11 @@ export function LandingHome() {
           <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="mkt-display max-w-xl text-3xl sm:text-4xl">
-                Ready to run the company from one desktop?
+                Ready to run the hospital on one chart?
               </h2>
               <p className="mkt-muted mt-4 max-w-lg text-sm leading-6">
-                Create your company, pick a package, invite the team — live on shared SaaS in minutes. Need
-                dedicated, self-hosted, or intranet? Sales will map it in one call.
+                Create the hospital, pick a plan, invite clinical staff — live on shared cloud in minutes. Need a
+                dedicated or intranet deployment? Sales will map it in one call.
               </p>
             </div>
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">

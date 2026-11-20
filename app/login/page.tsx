@@ -26,9 +26,9 @@ import {
 import { pullHmsFromSupabase, userRequiresHmsMfa } from "@/modules/healthcare/services/hms.store";
 
 const trustPoints = [
-  "Pay per app — 15 apps with role rights inside each license",
-  "Tenant-isolated Postgres for every company",
-  "Optional two-factor authentication (TOTP)"
+  "CareFlow is the hospital workspace — patients, wards, EMR, pharmacy, and billing",
+  "Administration is separate, for users and access",
+  "Local demo sign-in when Supabase is not configured"
 ];
 
 function LoginForm() {
@@ -106,11 +106,11 @@ function LoginForm() {
                 Secure workspace access
               </div>
               <h1 className="mt-6 text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
-                Sign in to run your company from one ERP.
+                Sign in to CareFlow Hospital Management.
               </h1>
               <p className="mt-4 max-w-md text-[15px] leading-7 text-white/72">
-                Admins, HR, sales, warehouse, and finance each open only the menus their role allows —
-                across CRM, stock, plant, hospital HMS, and finance.
+                Clinical staff open the hospital workspace. Administrators manage users and access.
+                CareFlow is the hospital workspace. Administration covers users and access.
               </p>
             </div>
 
@@ -197,6 +197,10 @@ function LoginForm() {
                   Need help?
                 </Link>
               </div>
+
+              <p className="text-xs leading-5 text-slate-500">
+                Local demo (no Supabase): <span className="font-semibold text-ink">admin@demo.com</span> / Demo@12345
+              </p>
 
               <MktButton type="submit" className="w-full" disabled={loading}>
                 {loading ? "Signing in…" : "Sign in to workspace"}

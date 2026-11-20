@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s | ${brand.productName}`
     },
     description:
-      "CareFlow Hospital Management — patients, OPD/IPD, EMR, pharmacy marketplace, lab, radiology, billing, telemedicine, and HIPAA-style compliance in one clinical workspace.",
+      "CareFlow Hospital Management — patients, OPD/IPD, EMR, pharmacy, lab, radiology, billing, and clinical compliance.",
     applicationName: full,
     icons: {
       icon: "/icon.svg"

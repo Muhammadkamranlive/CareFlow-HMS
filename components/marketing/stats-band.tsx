@@ -4,9 +4,9 @@ import { Reveal } from "@/components/marketing/reveal";
 import { StatCounter } from "@/components/marketing/stat-counter";
 
 const stats = [
-  { value: 15, suffix: "", label: "Pay-per apps", note: "13 business + 2 platform" },
-  { value: 180, suffix: "+", label: "Screens & registers", note: "All searchable via ⌘K" },
-  { value: 57, suffix: "", label: "Master catalogs", note: "Banks to lab tests" },
+  { value: 6, suffix: "", label: "Clinical areas", note: "Front desk through billing" },
+  { value: 40, suffix: "+", label: "Hospital screens", note: "Patients, wards, orders, pharmacy" },
+  { value: 1, suffix: "", label: "Patient chart", note: "OPD, IPD, EMR, and claims" },
   { value: 4, suffix: "", label: "Deployment models", note: "Cloud · VPS · self-hosted · intranet" }
 ];
 
@@ -19,7 +19,7 @@ export function StatsBand() {
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[color:var(--bs-teal)]">By the numbers</p>
           <h2 className="mkt-display mt-3 text-3xl text-white sm:text-4xl">
-            The depth of a suite, the polish of a product
+              A hospital system for the ward and the billing desk
           </h2>
         </Reveal>
         <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">

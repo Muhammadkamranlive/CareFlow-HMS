@@ -11,17 +11,15 @@ import { applyDesignTokens, fetchDesignTokens } from "@/lib/design-tokens";
 import { fetchLandingMedia } from "@/lib/marketing-media";
 import { getStoredUserEmail } from "@/lib/auth/session";
 import { useProductBrand } from "@/components/common/use-product-brand";
-import { MEGA_MENU_SECTIONS, TOTAL_PAYABLE_APP_COUNT } from "@/lib/billing/module-catalog";
-
 const primaryNav = [
-  { href: "/product/rule-engine", label: "Rule Engine" },
+  { href: "/#modules", label: "Hospital" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" }
 ];
 
 export function PublicSiteShell({ children }: { children: React.ReactNode }) {
-  const [menus, setMenus] = useState(() => listMenus());
+  const [menus, setMenus] = useState<ReturnType<typeof listMenus>>([]);
   const [open, setOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const brand = useProductBrand();
@@ -86,28 +84,13 @@ export function PublicSiteShell({ children }: { children: React.ReactNode }) {
         {open ? (
           <div className="border-t border-[#e6ebf1] bg-white px-4 py-3 lg:hidden">
             <div className="flex flex-col gap-1">
-              <p className="px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Apps ({TOTAL_PAYABLE_APP_COUNT})</p>
-              <Link href="/#modules" className="rounded-xl px-3 py-3 text-sm font-medium text-[#0a2540]" onClick={() => setOpen(false)}>
-                All apps overview
+              <p className="px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">CareFlow</p>
+              <Link href="/healthcare" className="rounded-xl px-3 py-3 text-sm font-medium text-[#0a2540]" onClick={() => setOpen(false)}>
+                Hospital workspace
               </Link>
-              <Link href="/#build-your-plan" className="rounded-xl px-3 py-2.5 text-sm font-medium text-[color:var(--bs-teal)]" onClick={() => setOpen(false)}>
-                Pay per app pricing
+              <Link href="/settings" className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#0a2540]" onClick={() => setOpen(false)}>
+                Administration
               </Link>
-              {MEGA_MENU_SECTIONS.map((section) => (
-                <div key={section.title}>
-                  <p className="px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{section.title}</p>
-                  {section.items.map((item) => (
-                    <Link
-                      key={item.href + item.label}
-                      href={item.href}
-                      className="block rounded-xl px-3 py-2.5 text-sm font-medium text-[#0a2540]"
-                      onClick={() => setOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              ))}
               {primaryNav.map((item) => (
                 <Link
                   key={item.href}
@@ -150,7 +133,7 @@ export function PublicSiteShell({ children }: { children: React.ReactNode }) {
               <span className="text-[15px] font-semibold tracking-tight">{brand.productName}</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-6 text-[#425466]">
-              Cloud ERP for operators — CRM, sales, stock, plant, people, hospital HMS, and finance in one subscribed workspace.
+              CareFlow Hospital Management — patients, wards, EMR, pharmacy, lab, and clinical billing.
             </p>
             <p className="mt-4 text-xs text-slate-400">Austin, TX · Support 8a–6p ET</p>
           </div>
@@ -158,16 +141,8 @@ export function PublicSiteShell({ children }: { children: React.ReactNode }) {
             {
               title: "Product",
               links: [
-                { href: "/#modules", label: "All modules" },
-                { href: "/product/email-engine", label: "Email Engine" },
-                { href: "/product/rule-engine", label: "Rule Engine" },
-                { href: "/product/crm", label: "CRM" },
-                { href: "/product/sales", label: "Sales" },
-                { href: "/product/hrm", label: "HRM" },
-                { href: "/product/healthcare", label: "Healthcare" },
-                { href: "/product/operations", label: "Operations" },
-                { href: "/product/finance", label: "Finance" },
-                { href: "/product/inventory", label: "Inventory" },
+                { href: "/healthcare", label: "CareFlow" },
+                { href: "/product/healthcare", label: "Hospital workspace" },
                 { href: "/product/administration", label: "Administration" },
                 { href: "/pricing", label: "Pricing" }
               ]

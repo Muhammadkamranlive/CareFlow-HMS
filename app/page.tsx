@@ -4,9 +4,9 @@ import { LandingHome } from "@/components/marketing/landing-home";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "BusinessSuite ERP Cloud | CRM, Stock, People, Clinic & Finance",
+  title: "CareFlow Hospital Management",
   description:
-    "Cloud ERP for growing companies. CRM, sales, procurement, inventory, operations, HRM, hospital HMS, finance, and BI. Professional adds a separate database, domain, and stack."
+    "CareFlow is the hospital product: patients, OPD and IPD, EMR, pharmacy, lab, radiology, and clinical billing."
 };
 
 export default function HomePage() {

@@ -65,7 +65,7 @@ export function AppShell({
   const router = useRouter();
   const pathname = usePathname();
   const boot = initialBootstrap();
-  const [hydrated, setHydrated] = useState(() => Boolean(boot));
+  const [hydrated, setHydrated] = useState(false);
   const [syncingRemote, setSyncingRemote] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(() => boot?.userEmail ?? null);
   const [tenantId, setTenantId] = useState(() => boot?.tenantId ?? seedTenants[0].id);

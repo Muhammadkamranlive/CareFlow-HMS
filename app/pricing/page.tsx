@@ -7,9 +7,7 @@ import { PublicSiteShell } from "@/components/layout/public-site-shell";
 import { PricingCards } from "@/components/billing/subscription-checkout";
 import { MktCta } from "@/components/marketing/mkt-button";
 import { DeploymentOptions } from "@/components/marketing/deployment-options";
-import { ModulePricingPicker } from "@/components/marketing/module-pricing-picker";
 import { InfraCompare } from "@/components/marketing/infra-compare";
-import { RuleEngineShowcase } from "@/components/marketing/rule-engine-showcase";
 import type { BillingInterval } from "@/modules/billing/services/subscriptions.store";
 
 function PricingInner() {
@@ -24,18 +22,17 @@ function PricingInner() {
         <div className="relative mx-auto max-w-6xl px-4 py-16 text-center md:px-6 md:py-20">
           <p className="mkt-eyebrow">Transparent USD pricing</p>
           <h1 className="mkt-display mx-auto mt-4 max-w-3xl text-4xl sm:text-5xl">
-            Base packages — plus pay per app for exactly what you need
+            Hospital plans for CareFlow
           </h1>
           <p className="mkt-muted mx-auto mt-5 max-w-2xl text-base leading-7">
-            Silver, Gold, and Platinum run on our shared SaaS cloud. Professional is dedicated — managed cloud, your
-            VPS, self-hosted under license, or a fully offline intranet. Every tier supports{" "}
-            <strong className="font-semibold text-[color:var(--bs-ink)]">pay per app</strong> — start with a bundle, then
-            add CRM-only, HRM-only, Healthcare, Email Engine, or Rule Engine below.
+            Silver, Gold, and Platinum run the hospital workspace on shared cloud. Professional is a dedicated
+            deployment — managed cloud, your VPS, self-hosted, or a fully offline intranet. Every plan is CareFlow
+            plus administration for users and access.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <MktCta href="#pricing-packages">Compare packages</MktCta>
-            <MktCta href="#build-your-plan" variant="secondary">
-              Build your app list
+            <MktCta href="/contact" variant="secondary">
+              Talk to sales
             </MktCta>
           </div>
         </div>
@@ -78,12 +75,10 @@ function PricingInner() {
             </Link>
           </p>
           <div className="mt-6 flex justify-center">
-            <MktCta href="/signup">Start company signup</MktCta>
+            <MktCta href="/signup">Start hospital signup</MktCta>
           </div>
         </div>
       </section>
-      <RuleEngineShowcase />
-      <ModulePricingPicker />
       <InfraCompare />
       <DeploymentOptions />
     </PublicSiteShell>

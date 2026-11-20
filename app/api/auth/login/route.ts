@@ -6,6 +6,7 @@ import {
 } from "@/lib/auth/server/account-lockout";
 import { enforceRateLimit } from "@/lib/auth/server/api-guard";
 import { DEFAULT_PASSWORD_MIN } from "@/lib/auth/server/password-policy";
+import { authenticateLocalDemo, isLocalDemoAuthEnabled } from "@/lib/auth/server/local-demo";
 import { isServerAuthEnabled, loginPlatformUser } from "@/lib/auth/server/platform-users";
 import { applySessionCookies } from "@/lib/auth/server/session-cookies";
 import { hasSecretKey } from "@/lib/supabase/server";
@@ -51,10 +52,35 @@ export async function POST(request: Request) {
   }
 
   if (!hasSecretKey()) {
-    return NextResponse.json(
-      { ok: false, error: "Server auth requires SUPABASE_SECRET_KEY. Configure Supabase on Vercel." },
-      { status: 503 }
-    );
+    if (!isLocalDemoAuthEnabled()) {
+      return NextResponse.json(
+        { ok: false, error: "Server auth requires SUPABASE_SECRET_KEY. Configure Supabase, or set CAREFLOW_LOCAL_AUTH=true for a local demo." },
+        { status: 503 }
+      );
+    }
+    const local = authenticateLocalDemo(email, password);
+    if (!local) {
+      const fail = await recordFailedLogin(email);
+      return NextResponse.json(
+        {
+          ok: false,
+          error: fail.locked
+            ? "Invalid email or password. Account locked after too many failed attempts."
+            : "Invalid email or password.",
+          locked: fail.locked
+        },
+        { status: fail.locked ? 423 : 401 }
+      );
+    }
+    await clearFailedLogins(email);
+    const response = NextResponse.json({
+      ok: true,
+      auth: "local-demo",
+      profile: local,
+      passwordPolicyHint: { minLength: DEFAULT_PASSWORD_MIN, rotationDays: 90 }
+    });
+    applySessionCookies(response, local.email, local.tenantId);
+    return response;
   }
 
   try {

@@ -14,7 +14,7 @@ function DesktopErp() {
       </div>
       <div className="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[9.25rem_1fr]">
         <aside className="space-y-1 bg-[color:color-mix(in_srgb,var(--bs-ink)_92%,black)] p-3 text-[11px] font-medium text-white/55">
-          {["Home", "CRM", "Sales", "Inventory", "People", "Finance"].map((item, i) => (
+          {["Home", "Patients", "OPD", "Wards", "Pharmacy", "Billing"].map((item, i) => (
             <div
               key={item}
               className={`rounded-lg px-2.5 py-1.5 ${i === 0 ? "bg-[color:var(--bs-teal)] text-white" : ""}`}

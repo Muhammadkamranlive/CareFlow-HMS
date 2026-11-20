@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { MarketingCmsPage } from "@/components/marketing/marketing-cms-page";
 
 export const metadata: Metadata = {
-  title: "About | BusinessSuite ERP Cloud",
-  description: "BusinessSuite ERP Cloud — operators-first ERP for growing U.S. companies."
+  title: "About | CareFlow Hospital Management",
+  description: "CareFlow Hospital Management — the clinical workspace for hospitals and clinics."
 };
 
 export default function AboutPage() {

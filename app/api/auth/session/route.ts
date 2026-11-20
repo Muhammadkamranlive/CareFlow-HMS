@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { findLocalDemoUser, isLocalDemoAuthEnabled } from "@/lib/auth/server/local-demo";
 import { sessionCookieName, tenantCookieName } from "@/lib/auth/server/session-cookies";
 import { findProfileByEmail, listMembershipsByEmailServer } from "@/lib/auth/server/platform-users";
 import { hasSecretKey } from "@/lib/supabase/server";
@@ -16,13 +17,15 @@ export async function GET() {
   }
 
   if (!hasSecretKey()) {
+    const local = isLocalDemoAuthEnabled() ? findLocalDemoUser(email) : null;
     return NextResponse.json({
       ok: true,
       authenticated: true,
+      auth: local ? "local-demo" : "cookie",
       email,
-      tenantId,
-      profile: null,
-      memberships: []
+      tenantId: tenantId ?? local?.tenantId ?? null,
+      profile: local,
+      memberships: local ? [local] : []
     });
   }
 

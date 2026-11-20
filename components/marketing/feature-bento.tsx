@@ -18,61 +18,61 @@ import { Reveal } from "@/components/marketing/reveal";
 const cells = [
   {
     icon: Layers3,
-    title: "Pay per app licensing",
+    title: "One chart for the hospital",
     body:
-      "Start with Silver, Gold, Platinum, or Professional — then license only CRM, HRM, Healthcare, Email Engine, Rule Engine, or any mix. No paying for modules you never open.",
+      "Registration, OPD, wards, EMR, lab, radiology, pharmacy, and billing stay on the same patient — no side spreadsheets between desks.",
     span: "lg:col-span-2"
   },
   {
     icon: Workflow,
-    title: "Rule Engine on every module",
+    title: "Front desk to discharge",
     body:
-      "When→then automations: email, in-app alerts, tasks, and approvals. Pick events, templates, and recipients — {{user_email}} or custom addresses.",
+      "Appointments, OPD tokens, admissions, transfers, and discharge follow the visit. Nursing, vitals, and MAR sit on the inpatient stay.",
     span: "lg:col-span-2"
   },
   {
     icon: ShieldCheck,
-    title: "Role-based access on every menu",
+    title: "Clinical access control",
     body:
-      "Every one of the ~180 screens is registered with view / create / update / delete rights. Assign a role, override per user — an accountant never sees payroll, a storekeeper never sees pricing.",
+      "Doctors, nurses, pharmacy, lab, and billing each see the menus their role allows. PHI access is audited, including break-glass.",
     span: "lg:col-span-2"
   },
   {
     icon: Search,
-    title: "⌘K global search",
-    body: "Jump to any menu you're allowed to see from the top bar. New pages appear in search automatically."
+    title: "Find a patient or screen",
+    body: "Search the hospital menus you are allowed to open. Patients, wards, orders, and invoices stay one click away."
   },
   {
     icon: SlidersHorizontal,
-    title: "Extra fields per company",
-    body: "Each tenant extends fixed forms with its own custom fields — no developer, no schema change."
+    title: "Extra fields on the chart",
+    body: "Each hospital can add its own fields to patient and clinical forms without a developer."
   },
   {
     icon: History,
-    title: "Audit trail & recycle bin",
-    body: "Every create, update, trash, restore, and export is logged. Deleted records land in a recycle bin, not the void."
+    title: "PHI audit trail",
+    body: "Creates, updates, and exports are logged. Deleted clinical records go to the recycle bin with a name and a time."
   },
   {
     icon: FileSpreadsheet,
-    title: "CSV & PDF everywhere",
-    body: "Every list exports the exact filtered, sorted view — and writes an audit event when it does."
+    title: "Lists, CSV, and discharge PDFs",
+    body: "Export the filtered patient, order, or invoice list. Discharge summaries print from the admission."
   },
   {
     icon: ListChecks,
-    title: "Enforced business rules",
+    title: "Charges that stay in balance",
     body:
-      "Three-way match blocks variant vendor bills. Credit hold stops over-limit orders. Receipts can't over-allocate. Payroll posts straight to GL.",
+      "Clinical invoices check line totals, tax, discount, and posted payments. A payment cannot exceed the open balance.",
     span: "lg:col-span-2"
   },
   {
     icon: Smartphone,
-    title: "Phone-ready, Capacitor-ready",
-    body: "Every screen works at 375px — same codebase ships to the web, tablets, and native mobile shells."
+    title: "Usable on the ward phone",
+    body: "The same CareFlow screens work at phone width for bedside lookup, not only at the front-desk desktop."
   },
   {
     icon: LayoutDashboard,
-    title: "Live dashboards & BI",
-    body: "Executive dashboard, CRM funnel, AR/AP, and data warehouse snapshots — screenshots from the live product, not mockups."
+    title: "Occupancy and clinical revenue",
+    body: "The hospital home shows patients, occupied beds, admissions, and collected clinical revenue from the live chart."
   }
 ];
 
@@ -88,13 +88,12 @@ export function FeatureBento() {
     <section id="platform" className="bg-[color:var(--bs-cloud)]">
       <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="mkt-eyebrow">The platform layer</p>
+          <p className="mkt-eyebrow">Clinical workspace</p>
           <h2 className="mkt-display mt-3 text-3xl text-[color:var(--bs-ink)] sm:text-4xl">
-            Details that make it feel like software built for you
+            Built for the ward, the lab, and the billing desk
           </h2>
           <p className="mkt-muted mt-4 text-[15px] leading-7">
-            Not a demo shell — a governed system. Access control, auditing, exports, and custom fields are
-            wired into every module, not bolted onto a few.
+            CareFlow is a hospital product. Access, audit, exports, and extra chart fields are part of the clinical workspace.
           </p>
         </Reveal>
 

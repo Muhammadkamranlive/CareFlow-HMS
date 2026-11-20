@@ -18,16 +18,16 @@ import { useLandingMedia } from "@/components/marketing/use-landing-media";
 
 const aboutValues = [
   {
-    title: "Operators first",
-    text: "We design for controllers, warehouse leads, and department managers — people who live in the numbers, not the pitch deck."
+    title: "Clinicians first",
+    text: "We design for front desk, nurses, doctors, pharmacy, and billing — people who live on the ward, not in a pitch deck."
   },
   {
-    title: "One system of record",
-    text: "CRM, sales, procurement, inventory, operations, HRM, hospital HMS, and finance share a tenant. No nightly exports. No ‘which spreadsheet is true?’"
+    title: "One patient chart",
+    text: "Registration, OPD, wards, EMR, lab, radiology, pharmacy, and clinical billing share the same hospital record."
   },
   {
     title: "Clear commercial terms",
-    text: "Four packages. USD. Monthly or annual. Activate with Stripe on this site — the same motion you expect from production SaaS."
+    text: "Hospital plans in USD, monthly or annual. Activate with Stripe on this site."
   }
 ];
 
@@ -142,7 +142,7 @@ function AboutLayout({ page, image, officeImage }: { page: CmsPage; image: strin
       <section className="mx-auto grid max-w-6xl items-start gap-12 px-4 py-12 md:grid-cols-[1.05fr_0.95fr] md:px-6 md:py-16">
         <CmsArticle title={page.title} content={page.content} hideTitle />
         <div className="space-y-4">
-          <img src={image} alt="BusinessSuite team collaboration" className="h-72 w-full rounded-[1.5rem] object-cover shadow-[0_24px_50px_rgba(10,37,64,0.12)] sm:h-96" />
+          <img src={image} alt="CareFlow team collaboration" className="h-72 w-full rounded-[1.5rem] object-cover shadow-[0_24px_50px_rgba(10,37,64,0.12)] sm:h-96" />
           <img src={officeImage} alt="Austin office" className="hidden h-56 w-full rounded-[1.5rem] object-cover md:block" />
         </div>
       </section>
@@ -160,7 +160,7 @@ function AboutLayout({ page, image, officeImage }: { page: CmsPage; image: strin
           </div>
           <div className="mt-12 flex flex-col gap-3 sm:flex-row">
             <MktCta href="/signup">
-              Start your company <ArrowRight className="size-4" />
+              Start your hospital <ArrowRight className="size-4" />
             </MktCta>
             <MktCta href="/contact" variant="secondary">
               Talk to the team
@@ -268,7 +268,7 @@ function LegalLayout({ page, headings }: { page: CmsPage; headings: { id: string
 function ArticleLayout({ page, image }: { page: CmsPage; image: string }) {
   return (
     <>
-      <PageHero eyebrow="BusinessSuite" title={page.title} summary={page.summary} />
+      <PageHero eyebrow="CareFlow" title={page.title} summary={page.summary} />
       <section className="mx-auto grid max-w-6xl gap-10 px-4 pb-20 md:grid-cols-[1fr_0.85fr] md:px-6">
         <div className="rounded-[1.5rem] border border-[#e6ebf1] bg-white p-6 sm:p-10">
           <CmsArticle title={page.title} content={page.content} hideTitle />

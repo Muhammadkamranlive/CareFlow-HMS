@@ -19,6 +19,7 @@ import { ActionCard, Panel, SectionHeader, StatTile } from "@/components/ui";
 import { getStoredTenantId } from "@/lib/auth/session";
 import { money } from "@/lib/utils";
 import { catalogHref, catalogSpecsForModule } from "@/modules/catalog/catalog-registry";
+import { ensureStandaloneHmsDemo } from "@/modules/healthcare/services/hms-demo-seed";
 import {
   getClinicalAnalytics,
   listAdmissions,
@@ -52,6 +53,7 @@ export default function HealthcareHomePage() {
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
+    ensureStandaloneHmsDemo(tenantId);
     void pullHmsClinicalFromSupabase(tenantId).finally(() => setTick((t) => t + 1));
     void pullHmsFromSupabase(tenantId).finally(() => setTick((t) => t + 1));
     const u1 = subscribeHmsClinical(() => setTick((t) => t + 1));

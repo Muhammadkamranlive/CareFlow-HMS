@@ -23,7 +23,7 @@ function has(file) {
   return fs.existsSync(path.join(root, file));
 }
 
-console.log("BusinessSuite deploy preflight\n");
+console.log("CareFlow HMS deploy preflight\n");
 
 if (has("package.json")) ok("package.json found");
 else fail("package.json missing");
@@ -35,7 +35,18 @@ if (has("vercel.json")) ok("vercel.json present (Next.js on Vercel)");
 else fail("vercel.json missing");
 
 if (has("email-api/Dockerfile")) ok("email-api/Dockerfile present");
-else fail("email-api/Dockerfile missing");
+else console.log("· email-api is optional for CareFlow (sibling BusinessSuite email service is not in this repo)");
+
+if (has("app/api/health/route.ts")) ok("health route present");
+else fail("app/api/health/route.ts missing");
+
+try {
+  const brand = JSON.parse(fs.readFileSync(path.join(root, "config/product.json"), "utf8"));
+  if (brand.productName === "CareFlow") ok("product brand is CareFlow");
+  else fail(`product brand is ${brand.productName ?? "empty"}`);
+} catch {
+  fail("config/product.json unreadable");
+}
 
 if (has(".env.example")) ok(".env.example template present");
 else fail(".env.example missing");

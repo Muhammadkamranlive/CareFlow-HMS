@@ -9,7 +9,7 @@ const shared = [
   "Your company workspace next to other customers on the same stack",
   "Company Admin for your users, roles, extra fields, and billing",
   "Platform Super Admin stays with us — blog, CMS, other companies, package catalog",
-  "Your domain is the BusinessSuite URL you sign in on"
+  "Your domain is the CareFlow URL you sign in on"
 ];
 
 const dedicated = [

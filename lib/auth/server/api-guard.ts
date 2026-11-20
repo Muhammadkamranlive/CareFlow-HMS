@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { sessionCookieName, tenantCookieName } from "@/lib/auth/server/session-cookies";
+import { findLocalDemoUser, isLocalDemoAuthEnabled } from "@/lib/auth/server/local-demo";
 import { findProfileByEmail } from "@/lib/auth/server/platform-users";
 import { checkRateLimit, clientIpFromRequest, RATE_LIMITS } from "@/lib/auth/server/rate-limit";
 import type { RoleKey } from "@/lib/permissions";
@@ -71,7 +72,15 @@ export async function requireApiSession(request: Request): Promise<GuardOk | Gua
       }
     }
   } catch {
-    /* demo/offline: cookie session only — allow with cookie tenant */
+    /* demo/offline: cookie session only — restore the seeded demo role when Supabase is absent */
+    if (isLocalDemoAuthEnabled()) {
+      const local = findLocalDemoUser(email);
+      if (local) {
+        role = local.role;
+        profileId = local.id;
+        tenantId = cookieTenant || local.tenantId;
+      }
+    }
   }
 
   return {

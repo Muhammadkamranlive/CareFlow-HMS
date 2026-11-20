@@ -17,6 +17,7 @@ import type {
   HmsProblem,
   HmsRoleAssignment
 } from "@/modules/healthcare/model/hms-core";
+import { auditInvoiceSet, toCents, type LedgerAudit } from "@/modules/healthcare/services/hms-ledger";
 import type { HmsRemoteSnapshot } from "@/modules/healthcare/services/hms.supabase-sync";
 import { queueAppointmentReminder, rescheduleAppointmentReminder } from "@/modules/healthcare/services/hms-reminders";
 
@@ -646,6 +647,11 @@ export function createInvoice(
     actor?: string;
   }
 ) {
+  if (!input.lines.length) throw new Error("Invoice needs at least one line.");
+  for (const line of input.lines) {
+    if (!(line.quantity > 0)) throw new Error("Line quantity must be greater than zero.");
+    if (line.unit_price < 0) throw new Error("Line price cannot be negative.");
+  }
   const lines: HmsInvoiceLine[] = input.lines.map((l) => ({
     ...l,
     id: id(),
@@ -653,10 +659,16 @@ export function createInvoice(
   }));
   const subtotal = Math.round(lines.reduce((s, l) => s + l.line_total, 0) * 100) / 100;
   const tax_rate = input.tax_rate ?? null;
+  if (tax_rate != null && tax_rate < 0) throw new Error("Tax rate cannot be negative.");
   const tax_amount =
     input.tax_amount ?? (tax_rate != null ? Math.round(subtotal * tax_rate * 100) / 10000 : 0);
   const discount_amount = input.discount_amount ?? 0;
+  if (discount_amount < 0) throw new Error("Discount cannot be negative.");
+  if (toCents(discount_amount) > toCents(subtotal + tax_amount)) {
+    throw new Error("Discount exceeds charges.");
+  }
   const total_amount = Math.round((subtotal + tax_amount - discount_amount) * 100) / 100;
+  if (total_amount < 0) throw new Error("Invoice total cannot be negative.");
   const row: HmsInvoice = {
     id: id(),
     tenant_id: tenantId,
@@ -700,8 +712,16 @@ export function recordPayment(
   method: string,
   actor?: string
 ) {
-  const inv = invoices.find((i) => i.id === invoiceId);
+  const inv = invoices.find((i) => i.id === invoiceId && i.tenant_id === tenantId && i.is_active !== false);
   if (!inv) return null;
+  if (inv.status === "void" || inv.status === "refunded") {
+    throw new Error("Cannot take payment on a void or refunded invoice.");
+  }
+  const due = Math.round((inv.total_amount - inv.paid_amount) * 100) / 100;
+  if (!(amount > 0)) throw new Error("Payment amount must be greater than zero.");
+  if (toCents(amount) > toCents(due)) {
+    throw new Error(`Payment exceeds balance due (${due.toFixed(2)}).`);
+  }
   const payment: HmsPayment = {
     id: id(),
     tenant_id: tenantId,
@@ -717,12 +737,20 @@ export function recordPayment(
     created_by: actor ?? null
   };
   payments.unshift(payment);
-  const paid = inv.paid_amount + amount;
+  const paid = Math.round((inv.paid_amount + amount) * 100) / 100;
   inv.paid_amount = paid;
-  inv.status = paid >= inv.total_amount ? "paid" : "partially_paid";
+  inv.status = toCents(paid) >= toCents(inv.total_amount) ? "paid" : "partially_paid";
   inv.updated_at = now();
   persist(tenantId);
   return payment;
+}
+
+/** Charges, posted payments, and open balance must agree for every active invoice. */
+export function auditClinicalLedger(tenantId: UUID): LedgerAudit {
+  return auditInvoiceSet(
+    invoices.filter((row) => row.tenant_id === tenantId && row.is_active !== false),
+    payments.filter((row) => row.tenant_id === tenantId && row.is_active !== false)
+  );
 }
 
 export function updateInvoice(entityId: UUID, patch: Partial<HmsInvoice>, actor?: string) {

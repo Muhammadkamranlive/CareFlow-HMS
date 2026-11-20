@@ -12,9 +12,9 @@ export type ProductBrand = {
 };
 
 export const defaultProductBrand: ProductBrand = {
-  productName: "BusinessSuite",
-  productTagline: "ERP Cloud",
-  legalName: "BusinessSuite, Inc."
+  productName: "CareFlow",
+  productTagline: "Hospital Management",
+  legalName: "CareFlow Health, Inc."
 };
 
 const CACHE_KEY = "businesssuite:product-brand:v1";

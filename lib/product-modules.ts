@@ -179,12 +179,12 @@ export const productModules: ProductModule[] = [
   },
   {
     slug: "healthcare",
-    title: "Healthcare",
-    eyebrow: "Hospital & clinic (HMS)",
+    title: "CareFlow",
+    eyebrow: "Hospital management",
     summary:
-      "Hospital HMS on real screens: patients, OPD/IPD, pharmacy, lab, radiology, EMR, OT, nursing, and insurance claims — same login as finance and HR.",
+      "The hospital workspace: patients, OPD and IPD, pharmacy, lab, radiology, EMR, theatre, nursing, claims, and clinical billing.",
     image: moduleScreenshot.healthcare,
-    heroCaption: "Healthcare HMS — patients, wards, pharmacy, lab, and claims",
+    heroCaption: "CareFlow — patients, wards, pharmacy, lab, and billing",
     highlights: [
       "MRN-style patients, doctors, appointments, OPD tokens, and ED triage",
       "Wards, beds, admissions, nursing notes, vitals, and duty rosters",

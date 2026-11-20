@@ -10,6 +10,8 @@
     "start": "next start",
     "preview": "next build --webpack && next start",
     "typecheck": "tsc --noEmit",
+    "check": "node scripts/check-runnable.mjs",
+    "check:server": "node scripts/check-runnable.mjs --server",
     "db:check": "node scripts/check-supabase.mjs",
     "db:status": "node scripts/db-migrate.mjs status",
     "db:link": "supabase link --project-ref xknvxjzrtfgvuiaiccii",

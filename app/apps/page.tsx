@@ -7,6 +7,7 @@ import { AppShell } from "@/components/app-shell";
 import { getSessionProfile } from "@/lib/auth/session-profile";
 import { getStoredTenantId } from "@/lib/auth/session";
 import { BILLABLE_MODULES } from "@/lib/billing/module-catalog";
+import { isCareFlowProductModule } from "@/lib/careflow-product";
 import { navGroups, type ModuleKey } from "@/lib/permissions";
 import { canViewModule } from "@/modules/admin/services/acl.store";
 import {
@@ -62,7 +63,7 @@ export default function AppsPortalPage() {
 
   const catalog = useMemo(() => {
     const byKey = new Map(navGroups.map((g) => [g.key, g]));
-    return BILLABLE_MODULES.map((billable) => {
+    return BILLABLE_MODULES.filter((billable) => isCareFlowProductModule(billable.key)).map((billable) => {
       const nav = byKey.get(billable.key);
       if (!nav) return null;
       const inPlan = tenantHasModule(tenantId, billable.key);
@@ -70,10 +71,10 @@ export default function AppsPortalPage() {
       const open = inPlan && roleOk;
       return {
         key: billable.key as ModuleKey,
-        label: nav.label,
+        label: billable.key === "healthcare" ? "CareFlow" : nav.label,
         href: nav.href,
         icon: nav.icon,
-        blurb: APP_BLURBS[billable.key] ?? billable.tagline,
+        blurb: billable.key === "healthcare" ? "Hospital management" : (APP_BLURBS[billable.key] ?? billable.tagline),
         tone: APP_TONES[billable.key] ?? "from-[#1877f2] to-[#4267b2]",
         open,
         lockedReason: !inPlan ? "Not in your plan" : !roleOk ? "No role access" : null
@@ -122,9 +123,9 @@ export default function AppsPortalPage() {
                   <Sparkles className="size-3.5" aria-hidden />
                   App portal
                 </p>
-                <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Your applications</h1>
+                <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">CareFlow</h1>
                 <p className="mt-2 max-w-xl text-sm leading-6 text-white/70">
-                  Search and open one app at a time. Available apps follow your subscription and role permissions.
+                  This workspace is the hospital product. Open CareFlow for clinical work, or Administration for users and access.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -150,7 +151,7 @@ export default function AppsPortalPage() {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search apps — CRM, HRM, Healthcare, Finance…"
+                placeholder="Search CareFlow or Administration"
                 className="h-12 w-full rounded-xl border border-white/10 bg-white pl-11 pr-4 text-sm font-medium text-ink shadow-sm outline-none ring-0 placeholder:text-slate-400 focus:border-[color:var(--bs-teal)] focus:ring-2 focus:ring-[color:var(--bs-teal)]/25"
                 aria-label="Search applications"
               />

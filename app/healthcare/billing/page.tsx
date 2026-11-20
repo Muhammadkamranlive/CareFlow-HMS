@@ -12,7 +12,10 @@ import { getStoredTenantId } from "@/lib/auth/session";
 import { exportListCsv } from "@/lib/list-export";
 import { filterAndSort } from "@/lib/list-query";
 import { money } from "@/lib/utils";
+import { ensureStandaloneHmsDemo } from "@/modules/healthcare/services/hms-demo-seed";
+import { fromCents } from "@/modules/healthcare/services/hms-ledger";
 import {
+  auditClinicalLedger,
   createInvoice,
   listEncounters,
   listInvoices,
@@ -49,9 +52,12 @@ export default function ClinicalBillingPage() {
     setEncounters(listEncounters(tenantId));
   }
   useEffect(() => {
+    ensureStandaloneHmsDemo(tenantId);
     void pullHmsFromSupabase(tenantId).finally(() => refresh());
     return subscribeHms(() => refresh());
   }, [tenantId]);
+
+  const ledger = useMemo(() => auditClinicalLedger(tenantId), [tenantId, rows]);
 
   const filtered = useMemo(
     () =>
@@ -94,7 +100,7 @@ export default function ClinicalBillingPage() {
       <ModuleBreadcrumbs />
       <PageHeader
         title="Clinical billing"
-        description="Encounter-linked OPD invoices with line categories (consultation, lab, pharmacy, room)."
+        description="Encounter invoices stay in balance: line totals, tax, discount, posted payments, and status."
         actionLabel="New invoice"
         onAction={() => {
           setForm({
@@ -153,6 +159,29 @@ export default function ClinicalBillingPage() {
           </form>
         </Panel>
       ) : null}
+      <Panel className="mb-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Checks and balance</p>
+            <p className="mt-1 text-sm text-ink">
+              {ledger.invoiceCount} invoice{ledger.invoiceCount === 1 ? "" : "s"} · charges {money(fromCents(ledger.chargesCents))} · paid{" "}
+              {money(fromCents(ledger.paymentsCents))} · open {money(fromCents(ledger.openCents))}
+            </p>
+          </div>
+          <p className={`text-sm font-semibold ${ledger.balanced ? "text-emerald-700" : "text-amber-700"}`}>
+            {ledger.balanced ? "Ledger in balance" : `${ledger.issues.length} imbalance${ledger.issues.length === 1 ? "" : "s"}`}
+          </p>
+        </div>
+        {ledger.issues.length ? (
+          <ul className="mt-3 space-y-1 text-sm text-amber-800">
+            {ledger.issues.slice(0, 6).map((issue) => (
+              <li key={`${issue.invoiceNo}-${issue.message}`}>
+                {issue.invoiceNo}: {issue.message}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </Panel>
       {checkoutError ? (
         <Panel className="mb-4">
           <p className="text-sm text-amber-700">{checkoutError}</p>
@@ -190,6 +219,7 @@ export default function ClinicalBillingPage() {
                 <th className="px-3 py-2">Invoice</th>
                 <th>Patient</th>
                 <th>Total</th>
+                <th>Balance</th>
                 <th>Status</th>
                 <th />
               </tr>
@@ -203,6 +233,7 @@ export default function ClinicalBillingPage() {
                     {money(row.total_amount)}
                     <div className="text-xs text-slate-500">Paid {money(row.paid_amount)}</div>
                   </td>
+                  <td>{money(Math.max(0, row.total_amount - row.paid_amount))}</td>
                   <td>
                     <StatusBadge status={row.status} />
                   </td>
@@ -228,8 +259,14 @@ export default function ClinicalBillingPage() {
                           variant="secondary"
                           className="!px-2 !py-1 text-xs"
                           onClick={() => {
-                            recordPayment(tenantId, row.id, row.total_amount - row.paid_amount, "card", "billing");
-                            refresh();
+                            setCheckoutError("");
+                            try {
+                              const due = Math.round((row.total_amount - row.paid_amount) * 100) / 100;
+                              recordPayment(tenantId, row.id, due, "card", "billing");
+                              refresh();
+                            } catch (err) {
+                              setCheckoutError(err instanceof Error ? err.message : "Payment was rejected.");
+                            }
                           }}
                         >
                           Record payment

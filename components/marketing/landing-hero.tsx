@@ -14,9 +14,9 @@ import { useLandingMedia } from "@/components/marketing/use-landing-media";
 import { mediaUrl } from "@/lib/marketing-media";
 
 const heroStats = [
-  { value: 13, suffix: "", label: "Business apps" },
-  { value: 2, suffix: "", label: "Platform engines" },
-  { value: 180, suffix: "+", label: "Screens & registers" },
+  { value: 1, suffix: "", label: "Hospital workspace" },
+  { value: 6, suffix: "", label: "Clinical areas" },
+  { value: 40, suffix: "+", label: "Care screens" },
   { value: 4, suffix: "", label: "Deployment models" }
 ];
 
@@ -44,21 +44,20 @@ export function LandingHero() {
             </span>
 
             <h1 className="mkt-display mt-6 text-[2.5rem] text-[color:var(--bs-ink)] sm:text-5xl lg:text-[3.25rem]">
-              One ERP that runs the <span className="mkt-gradient-text">entire company</span> — anywhere you want it hosted.
+              The hospital system for <span className="mkt-gradient-text">patients, wards, and pharmacy</span> — in one clinical workspace.
             </h1>
 
             <p className="mkt-muted mt-6 max-w-xl text-base leading-7 sm:text-lg">
-              CRM, sales, procurement, inventory, plant operations, HRM &amp; payroll, hospital HMS, projects,
-              documents, finance, and BI — 13 business apps behind one login, plus Email Engine and Rule Engine.
-              Pay only for the apps you license.
+              CareFlow is hospital management: registration and OPD, inpatient wards and beds, EMR, lab and radiology,
+              pharmacy, claims, and clinical billing. Front desk, nurses, doctors, and billing share one chart.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <MktCta href="/signup" className="w-full min-w-[11.5rem] sm:w-auto">
-                Start your company <ArrowRight className="size-4" />
+                Start your hospital <ArrowRight className="size-4" />
               </MktCta>
               <MktCta href="/#modules" variant="secondary" className="w-full min-w-[11.5rem] sm:w-auto">
-                <Play className="size-4" /> Tour the modules
+                <Play className="size-4" /> Tour the hospital
               </MktCta>
             </div>
 
@@ -69,7 +68,7 @@ export function LandingHero() {
                 ))}
               </span>
               <p className="text-[13px] leading-snug text-slate-500">
-                Trusted by teams in trading, healthcare, textile &amp; auto parts
+                Built for hospitals, clinics, and pharmacy desks
               </p>
             </div>
 
@@ -92,7 +91,7 @@ export function LandingHero() {
               <div className="mkt-hero-shot">
                 <img
                   src={mediaUrl("hero.dashboard", media)}
-                  alt="BusinessSuite executive dashboard — live operational mix, CRM funnel, and company KPIs"
+                  alt="CareFlow hospital workspace — patients, wards, pharmacy, and clinical billing"
                 />
               </div>
             </div>
